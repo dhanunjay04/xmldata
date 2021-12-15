@@ -1,0 +1,4 @@
+monitoredObjectSiteId,portId,timeCaptured,inProfilePktsForwarded,inProfilePktsDropped,outOfProfilePktsForwarded,outOfProfilePktsDropped,inProfileOctetsForwarded,inProfileOctetsDropped,outOfProfileOctetsForwarded,outOfProfileOctetsDropped
+10.1.1.4,1/1/c1/1,2021-07-27 07:15:15,1488146,0,0,0,110750180,0,0,0
+10.1.1.4,2/1/c1/1,2021-07-27 07:15:15,946775,0,0,0,157916489,0,0,0
+10.1.1.4,2/1/c10/1,2021-07-27 07:15:15,750062,0,0,0,58504836,0,0,0
