@@ -1,0 +1,4 @@
+2021-12-17 15:38:14,289 - simple_example - INFO - info message
+2021-12-17 15:38:14,289 - simple_example - WARNING - warn message
+2021-12-17 15:38:14,289 - simple_example - ERROR - error message
+2021-12-17 15:38:14,290 - simple_example - CRITICAL - critical message

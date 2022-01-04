@@ -3,49 +3,98 @@
   <component name="CsvFileAttributes">
     <option name="attributeMap">
       <map>
-        <entry key="/10_1_1_4_1627350315519_6.csv">
+        <entry key="/csvFiles/10_1_1_4_1627350315519_6.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
             </Attribute>
           </value>
         </entry>
-        <entry key="/data.csv">
+        <entry key="/csvFiles/10_1_1_5_1634689607341_405.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
             </Attribute>
           </value>
         </entry>
-        <entry key="/equipment_AvailableMemoryStats_1627283101502_22.csv">
+        <entry key="/csvFiles/2_0_0_109_1628672430318_9.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
             </Attribute>
           </value>
         </entry>
-        <entry key="/equipment_CpuUtilizationStats_1627288200931_30-1.csv">
+        <entry key="/csvFiles/availableMemoryInKb.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
             </Attribute>
           </value>
         </entry>
-        <entry key="/equipment_CpuUtilizationStats_1627288200931_30.csv">
+        <entry key="/csvFiles/card_stats.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
             </Attribute>
           </value>
         </entry>
-        <entry key="/equipment_InterfaceAdditionalStats_1627269661024_13-1.csv">
+        <entry key="/csvFiles/equipment_CpuUtilizationStats_1627288200931_30.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
             </Attribute>
           </value>
         </entry>
-        <entry key="/equipment_InterfaceAdditionalStats_1627269661024_13.csv">
+        <entry key="/csvFiles/equipment_CpuUtilizationStats_1627288200931_30_1.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/csvFiles/equipment_CpuUtilizationStats_1627288200931_30_2.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/csvFiles/equipment_InterfaceAdditionalStats_1627269661024_13.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/csvFiles/equipment_MemoryUtilizationStats_1627288201220_31.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/csvFiles/equipment_SystemCpuStats_1627282800959_20.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/csvFiles/equipment_SystemMemoryStats_1627282801168_21.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/csvFiles/mpls_MplsLspEgressStats_1627297200632_3.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/csvFiles/system_stats.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
