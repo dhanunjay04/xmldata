@@ -31,13 +31,6 @@
             </Attribute>
           </value>
         </entry>
-        <entry key="/csvFiles/card_stats.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
         <entry key="/csvFiles/equipment_CpuUtilizationStats_1627288200931_30.csv">
           <value>
             <Attribute>
@@ -88,13 +81,6 @@
           </value>
         </entry>
         <entry key="/csvFiles/mpls_MplsLspEgressStats_1627297200632_3.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="/csvFiles/system_stats.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />

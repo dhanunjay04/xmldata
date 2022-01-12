@@ -5,10 +5,12 @@ import csv
 
 # Metrics list
 
-# combined_services_metric_list = ["monitoredObjectSiteId", "portId", "timeCaptured", "inProfilePktsForwarded",
-#                         "inProfilePktsDropped", "outOfProfilePktsForwarded", "outOfProfilePktsDropped",
-#                         "inProfileOctetsForwarded", "inProfileOctetsDropped",
-#                         "outOfProfileOctetsForwarded", "outOfProfileOctetsDropped"]
+combined_services_metric_list = ["monitoredObjectSiteId", "portId", "timeCaptured", "inProfilePktsDropped-8",
+                                 "outOfProfilePktsDropped-8", "inProfilePktsDropped-7", "outOfProfilePktsDropped-7",
+                                 "inProfilePktsDropped-6", "outOfProfilePktsDropped-6", "inProfilePktsDropped-5",
+                                 "outOfProfilePktsDropped-5", "inProfilePktsDropped-4", "outOfProfilePktsDropped-4",
+                                 "inProfilePktsDropped-3", "outOfProfilePktsDropped-3", "inProfilePktsDropped-2",
+                                 "outOfProfilePktsDropped-2", "inProfilePktsDropped-1", "outOfProfilePktsDropped-1"]
 
 services_mpls_metric_list = ["monitoredObjectSiteId", "displayedName", "timeCaptured", "aggregatePkts",
                              "aggregateOctets"]
@@ -50,11 +52,12 @@ services_gress_metric_list = ["monitoredObjectSiteId", "displayedName", "timeCap
                               "egress-outOfProfilePktsForwarded-1", "egress-outOfProfilePktsDropped-1",
                               "egress-outOfProfileOctetsForwarded-1", "egress-outOfProfileOctetsDropped-1"]
 
-services_saspm_twl_metric_list = ["monitoredObjectSiteId", "monitoredObjectPointer", "timeCaptured", "delayTwl2wyMin",
+services_saspm_twl_metric_list = ["monitoredObjectSiteId", "sessionName", "timeCaptured", "delayTwl2wyMin",
                                   "delayTwl2wyMax", "delayTwl2wyAvg", "delayTwlFwdMin", "delayTwlFwdMax",
                                   "delayTwlFwdAvg", "delayTwlBwdMin", "delayTwlBwdMax", "delayTwlBwdAvg"]
 
-system_common = ["monitoredObjectSiteId", "timeCaptured", "availableMemoryInKb", "systemCpuUsage",
+system_common = ["monitoredObjectSiteId", "monitoredObjectSiteName", "timeCaptured", "availableMemoryInKb",
+                 "systemCpuUsage",
                  "systemMemoryUsage", "systemMemoryUsageInKb"]
 
 eqpt_card_metric_list = ["monitoredObjectSiteId", "displayedName", "timeCaptured", "cpuIdle-1", "cpuIdle-60",
@@ -67,12 +70,12 @@ eqpt_interface_metric_list = ["monitoredObjectSiteId", "displayedName", "timeCap
                               "transmittedMulticastPacketsPeriodic", "transmittedBroadcastPacketsPeriodic"]
 
 
-def parse_xml_file(path, name):
+def parse_xml_file(path, name, neFilesPath):
     try:
         xml = ET.parse(path + name)
         os.remove(path + name)
         name = name.replace(".xml", "")
-        file_name = path + "../csvFiles/" + name + ".csv"
+        file_name = neFilesPath + name + ".csv"
         root = xml.getroot()
         prefix = ""
         for child in root:
@@ -87,9 +90,15 @@ def parse_xml_file(path, name):
         elif root.find(prefix + "equipment.SystemMemoryStatsLogRecord") is not None:
             get_system_stats(file_name, root, prefix, system_common,
                              "equipment.SystemMemoryStatsLogRecord")
-        # elif root.find(prefix + "service.CombinedQueueGroupNetworkEgressLogRecord") is not None:
-        #     get_stats(file_name, root, prefix, combined_services_metric_list,
-        #               "service.CombinedQueueGroupNetworkEgressLogRecord")
+        elif root.find(prefix + "service.CombinedQueueGroupNetworkEgressLogRecord") is not None:
+            diction = {}
+            diction = get_combined_service_stats(root, prefix, combined_services_metric_list,
+                                                 "service.CombinedQueueGroupNetworkEgressLogRecord", diction)
+            try:
+                write_file(file_name, combined_services_metric_list, diction)
+            except Exception:
+                logging.error(" Error while creating CombinedQueueGroupNetworkEgressLogRecord stats: ", Exception)
+
         elif root.find(prefix + "service.CompleteServiceIngressPacketOctetsLogRecord") is not None or \
                 root.find(prefix + "service.CompleteServiceEgressPacketOctetsLogRecord") is not None:
             diction = {}
@@ -159,6 +168,27 @@ def get_service_values(obj, prefix, metricList):
     return values
 
 
+def get_combined_service_values(obj, prefix, metricList):
+    values = []
+    for metric in metricList:
+        if metric.__eq__("timeCaptured"):
+            values.append(my_time(obj.find(prefix + metric).text))
+        elif metric.__eq__("portId"):
+            values.append("Port " + obj.find(prefix + metric).text)
+        elif metric.__contains__("-"):
+            try:
+                queue = metric.split("-")[1]
+                tag = metric.split("-")[0]
+                values.append(get_queue_value(obj, prefix, tag, queue))
+            except Exception:
+                values.append("")
+        elif obj.find(prefix + metric) is not None:
+            values.append(obj.find(prefix + metric).text)
+        else:
+            values.append("")
+    return values
+
+
 def get_sampling_value(obj, prefix, match):
     m_value = ""
     if obj.find(prefix + "samplingTime") is not None and obj.find(prefix + "samplingTime").text.__eq__(match):
@@ -178,7 +208,7 @@ def get_system_stats(file_name, root, prefix, metricList, tagName):
     # FOR EACH Object
     for obj in root.findall(prefix + tagName):
         values = get_values(obj, prefix, metricList)
-        monitoredObjectSiteId = values[0]
+        monitoredObjectSiteId = values[0] + values[1]
         if diction.keys().__contains__(monitoredObjectSiteId) and diction[monitoredObjectSiteId] is not None:
             temp_values = diction[monitoredObjectSiteId]
             if values[2] is not None and not values[2].__eq__(""):
@@ -206,6 +236,23 @@ def get_service_stats(root, prefix, metricList, tagName, diction):
         if diction.keys().__contains__(monitoredObjectSiteId) and diction[monitoredObjectSiteId] is not None:
             temp_values = diction[monitoredObjectSiteId]
             for i in range(72):
+                no = i + 2
+                if values[no] is not None and not values[no].__eq__(""):
+                    temp_values[no] = values[no]
+            diction[monitoredObjectSiteId] = temp_values
+        else:
+            diction[monitoredObjectSiteId] = values
+    return diction
+
+
+def get_combined_service_stats(root, prefix, metricList, tagName, diction):
+    # FOR EACH Object
+    for obj in root.findall(prefix + tagName):
+        values = get_combined_service_values(obj, prefix, metricList)
+        monitoredObjectSiteId = values[0] + values[1]
+        if diction.keys().__contains__(monitoredObjectSiteId) and diction[monitoredObjectSiteId] is not None:
+            temp_values = diction[monitoredObjectSiteId]
+            for i in range(16):
                 no = i + 2
                 if values[no] is not None and not values[no].__eq__(""):
                     temp_values[no] = values[no]
